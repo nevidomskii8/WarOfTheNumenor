@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "game",
   "main": "index.js",
+    "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "heroku-prebuild": "npm install --prefix client",
