@@ -28,12 +28,12 @@ export default function HeroPanel({ hero }) {
           </div>
           <div className="heroPanel__magic heroPanel__infoContainer">
             <h3 className="heroPanel__title">Магия и способности героев:</h3>
-            <p>Маг: {hero.heroMagic.mage.chanсe}% урон {hero.heroMagic.mage.dmg}</p>
-            <p>Человек: {hero.heroMagic.human.chanсe}% урон {hero.heroMagic.human.dmg}</p>
-            <p>Эльф: {hero.heroMagic.elf.chanсe}% урон {hero.heroMagic.elf.dmg}</p>
-            <p>Гном: {hero.heroMagic.gnome.chanсe}% урон {hero.heroMagic.gnome.dmg}</p>
-            <p>Воля Валар: {hero.heroMagic.valar.chanсe}% урон {hero.heroMagic.valar.dmg}</p>
-            <p>Воля Моргота: {hero.heroMagic.morgote.chanсe}% урон {hero.heroMagic.morgote.dmg}</p>
+            <p>Маг: {hero.heroMagic.mage.chance}% урон {hero.heroMagic.mage.dmg}</p>
+            <p>Человек: {hero.heroMagic.human.chance}% урон {hero.heroMagic.human.dmg}</p>
+            <p>Эльф: {hero.heroMagic.elf.chance}% урон {hero.heroMagic.elf.dmg}</p>
+            <p>Гном: {hero.heroMagic.gnome.chance}% урон {hero.heroMagic.gnome.dmg}</p>
+            <p>Воля Валар: {hero.heroMagic.valar.chance}% урон {hero.heroMagic.valar.dmg}</p>
+            <p>Воля Моргота: {hero.heroMagic.morgote.chance}% урон {hero.heroMagic.morgote.dmg}</p>
           </div>
           <div className="heroPanel__buffAttack heroPanel__infoContainer">
             <h3 className="heroPanel__title">Усиление атаки:</h3>

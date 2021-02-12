@@ -9,9 +9,14 @@
   src: local('Konstanting'), url(./assets/fonts/Konstanting.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Vinque';
+  src: local('Vinque'), url(./assets/fonts/Vinque.ttf) format('truetype');
+}
+
 html {
-  font-size: 26px;
-  font-family: 'Arial';
+  font-size: 20px;
+  font-family: 'Vinque';
 }
 
 ul>li {

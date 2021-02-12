@@ -105,7 +105,7 @@ const HeroSchema = new Schema({
   },
   heroMagic: {
     mage: {
-      chanсe: {
+      chance: {
         type: Number,
         default: 30
       },
@@ -115,7 +115,7 @@ const HeroSchema = new Schema({
       }
     },
     human: {
-      chanсe: {
+      chance: {
         type: Number,
         default: 20
       },
@@ -125,7 +125,7 @@ const HeroSchema = new Schema({
       },
     },
     elf: {
-      chanсe: {
+      chance: {
         type: Number,
         default: 20
       },
@@ -135,7 +135,7 @@ const HeroSchema = new Schema({
       }
     },
     gnome: {
-      chanсe: {
+      chance: {
         type: Number,
         default: 20
       },
@@ -145,7 +145,7 @@ const HeroSchema = new Schema({
       }
     },
     valar: {
-      chanсe: {
+      chance: {
         type: Number,
         default: 5
       },
@@ -155,7 +155,7 @@ const HeroSchema = new Schema({
       }
     },
     morgote: {
-      chanсe: {
+      chance: {
         type: Number,
         default: 2
       },

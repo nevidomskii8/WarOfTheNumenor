@@ -5,19 +5,19 @@ const HeroModel = require('../models/HeroModel')
 
 
 heroesRouter.get('/',async (req,res) => {
-  const pictures = await HeroModel.find({});
-  res.status(200).json(pictures)
+  const hero = await HeroModel.find({});
+  res.status(200).json(hero)
 })
 
 
 heroesRouter.get('/:heroLogin',async (req,res) => {
-  const picture = await HeroModel.find({login: req.params.heroLogin});
+  const hero = await HeroModel.find({login: req.params.heroLogin});
   
-  if (!picture) {
+  if (!hero) {
     res.status(400).send({ error: 'Hero not found' });
     return
   } else {
-    res.status(200).send(picture);
+    res.status(200).send(hero);
   }
 })
 
