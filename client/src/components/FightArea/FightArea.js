@@ -56,7 +56,7 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
   const getChanceMagic = (percents) => {
     const attackChance = Math.random() * 100;
     let chance = false;
-    if(attackChance <= percents) {
+    if (attackChance <= percents) {
       chance = true
     } else {
       chance = false
@@ -74,7 +74,7 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
     let creepHpAfterAttack = creeps.hp;
     let heroDefAfterAttack = hero.def;
     // army Damage
-    let allHeroDmg, horsemenDmg, archersDmg, infantryDmg, mageDmg, humanDmg, elfDmg, gnomeDmg, valarDmg, morgoteDmg,critical,surprise;
+    let allHeroDmg, horsemenDmg, archersDmg, infantryDmg, mageDmg, humanDmg, elfDmg, gnomeDmg, valarDmg, morgoteDmg, critical, surprise;
 
     if (isAttackHero) {
       horsemenDmg = getRandomInt(hero.army.horsemen.minDmg * hero.army.horsemen.count, hero.army.horsemen.maxDmg * hero.army.horsemen.count)
@@ -93,13 +93,13 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
       allHeroDmg = horsemenDmg + archersDmg + infantryDmg + magicDmg
 
       critical = getChanceMagic(hero.buffAttack.crit.chance)
-      if(critical) {
-        allHeroDmg = parseInt((allHeroDmg * hero.buffAttack.crit.dmg)/100 + allHeroDmg)
+      if (critical) {
+        allHeroDmg = parseInt((allHeroDmg * hero.buffAttack.crit.dmg) / 100 + allHeroDmg)
       }
 
-      surprise =  getChanceMagic(hero.buffAttack.surprise.chance)
-      if(surprise) {
-        allHeroDmg = parseInt((allHeroDmg * hero.buffAttack.surprise.dmg)/100 + allHeroDmg)
+      surprise = getChanceMagic(hero.buffAttack.surprise.chance)
+      if (surprise) {
+        allHeroDmg = parseInt((allHeroDmg * hero.buffAttack.surprise.dmg) / 100 + allHeroDmg)
       }
 
       creepHpAfterAttack = creepHpAfterAttack - allHeroDmg
@@ -118,7 +118,7 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
     }
 
 
-    setLogs([...logs, { allHeroDmg: allHeroDmg, horsemenDmg: horsemenDmg, archersDmg: archersDmg, infantryDmg: infantryDmg, creepDmg: creepDmg, mageDmg: mageDmg, humanDmg: humanDmg, elfDmg: elfDmg, gnomeDmg: gnomeDmg, valarDmg: valarDmg, morgoteDmg: morgoteDmg,critical:critical,surprise:surprise }])
+    setLogs([...logs, { allHeroDmg: allHeroDmg, horsemenDmg: horsemenDmg, archersDmg: archersDmg, infantryDmg: infantryDmg, creepDmg: creepDmg, mageDmg: mageDmg, humanDmg: humanDmg, elfDmg: elfDmg, gnomeDmg: gnomeDmg, valarDmg: valarDmg, morgoteDmg: morgoteDmg, critical: critical, surprise: surprise }])
 
     if (creepHpAfterAttack <= 0) setFightResult('Победа')
     if (heroDefAfterAttack <= 0) setFightResult('Поражение')
@@ -130,6 +130,9 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
       <h2 className='fightArea__title'>Поле сражения</h2>
       {fightResult &&
         <h3 className={`fightArea__fightResult ${fightResult === 'Поражение' && 'fightArea__fightResult--defeat'}`}>{fightResult}</h3>
+      }
+      {fightResult &&
+        <button className={`fightArea__fightResult fightArea__btnReset ${fightResult === 'Поражение' && 'fightArea__fightResult--defeat'}`} onClick={() => window.location.reload()}>Начать новый бой</button>
       }
       <div className="fightArea__fight">
         {hero &&
@@ -184,12 +187,12 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
                     <span>
                       Урон всадников:{log.horsemenDmg} Урон лучников:{log.archersDmg} Урон пехоты:{log.infantryDmg}
                     </span>
-                    {log.mageDmg>0 && <span>Урон мага:{log.mageDmg}</span>}
-                    {log.humanDmg>0 && <span>Урон человека:{log.humanDmg}</span>}
-                    {log.elfDmg> 0 && <span>Урон эльфа:{log.elfDmg}</span>}
-                    {log.gnomeDmg>0 && <span>Урон гнома:{log.gnomeDmg}</span>}
-                    {log.valarDmg>0 && <span>Воля валар:{log.valarDmg}</span>}
-                    {log.morgoteDmg>0 && <span>Воля моргота:{log.morgoteDmg}</span>}
+                    {log.mageDmg > 0 && <span>Урон мага:{log.mageDmg}</span>}
+                    {log.humanDmg > 0 && <span>Урон человека:{log.humanDmg}</span>}
+                    {log.elfDmg > 0 && <span>Урон эльфа:{log.elfDmg}</span>}
+                    {log.gnomeDmg > 0 && <span>Урон гнома:{log.gnomeDmg}</span>}
+                    {log.valarDmg > 0 && <span>Воля валар:{log.valarDmg}</span>}
+                    {log.morgoteDmg > 0 && <span>Воля моргота:{log.morgoteDmg}</span>}
                   </>
                 }
 

@@ -61,4 +61,11 @@
   &__infoContainer {
     border: 1px solid #000;
   }
+
+  &__btnReset {
+    margin: 0 auto;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 1%;
+  }
 }
