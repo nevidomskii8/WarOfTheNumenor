@@ -7,7 +7,7 @@ const ItemSchema = new Schema({
     required: true,
     unique: true,
   },
-  chance: {
+  grade: {
     type: Number,
     default: 5,
   }

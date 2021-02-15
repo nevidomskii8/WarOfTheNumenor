@@ -1,14 +1,14 @@
 import React from 'react'
 import './HeroPanel.scss'
-export default function HeroPanel({ hero }) {
+export default function HeroPanel({ hero,className }) {
   const armyCount = hero && hero.army.horsemen.count + hero.army.archers.count + hero.army.infantry.count
 
   return (
     <>
       {
         hero &&
-        <div className='heroPanel'>
-          <h2>Имя: {hero.login}</h2>
+        <div className={`heroPanel ${className}`}>
+          <h2 className='heroPanel__heroes'>Имя: {hero.login}</h2>
           <div className="heroPanel__container">
             <p>Мощь:{hero.power}</p>
             <p>Уровень:{hero.level}</p>

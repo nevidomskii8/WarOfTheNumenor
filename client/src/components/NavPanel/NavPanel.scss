@@ -1,0 +1,39 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1% 0;
+
+  &__item {
+    width: 308px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &--backpack {
+      background-image: url('../../assets/png/backpack.png');
+    }
+    &--altar {
+      background-image: url('../../assets//png/altar.png');
+    }
+    &--forge {
+      background-image: url('../../assets//png/forge.png');
+    }
+    &--pvp {
+      background-image: url('../../assets//png/pvp.png');
+    }
+    &--barracks {
+      background-image: url('../../assets//png/barracks.png');
+    }
+    &--shop {
+      background-image: url('../../assets//png/shop.png');
+    }
+  }
+
+  &__text {
+    margin: auto;
+    text-shadow: 0px 0px 4px #FFFFFF;
+    font-size: 1rem;
+  }
+}

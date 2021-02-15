@@ -1,4 +1,18 @@
 .home {
-  display: flex;
-  justify-content: flex-start;
+  padding: 0 5px;
+
+  &__figthArea {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  &__heroPanel {
+    margin-right: 0.5%;
+  }
+
+  &__location {
+    margin-left: 0.5%;
+    width: 40%;
+  }
 }

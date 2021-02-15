@@ -45,7 +45,13 @@ const CreepSchema = new Schema({
   },
   loot: {
     type: Array,
-    default: ['Эссенция мага', 'Шкура волка']
+    default: [
+      {
+        itemName: 'Эссенция мага',
+        chance: 100,
+        grade: 'common'
+      }
+    ]
   }
 });
 

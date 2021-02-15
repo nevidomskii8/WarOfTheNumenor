@@ -200,7 +200,12 @@ const HeroSchema = new Schema({
       type: Number,
       default: 15,
     }
+  },
+  backpack: {
+    type: Array,
+    default: [{itemName:'Эссенция мага'}]
   }
+
 });
 
 HeroSchema.methods.auth = function (password) {

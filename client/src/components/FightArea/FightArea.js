@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import creepImg from '../../assets/png/creep.png'
 import heroImg from '../../assets/png/hero.png'
 import './FightArea.scss'
+import getRandomInt from '../../helpers/getRandomInt'
+import { getChanceAttack, getChanceMagic } from '../../helpers/getChance'
 
 export default function FightArea({ heroData, creepData, creepsCount }) {
   const [hero, setHero] = useState({})
@@ -9,6 +11,10 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
   const [logs, setLogs] = useState([]) // [[heroDmg,creepDmg],...]
   const [fightResult, setFightResult] = useState('')
   const [clickCounter, setClickCounter] = useState(0)
+  const [heroHpBar, setHeroHpBar] = useState(100)
+  const [creepHpBar, setCreepHpBar] = useState(100)
+  const [loot, setLoot] = useState([])
+
   useEffect(() => {
     heroData && setHero(heroData)
   }, [heroData])
@@ -35,33 +41,16 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
 
   }, [creepData])
 
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
-  }
+  const prepareLootArr = () => {
+    const lootArr = creeps.loot.map(item => {
+      if (getChanceMagic(item.chance)) {
+        return item
+      } else {
+        return
+      }
+    })
 
-  const getChanceAttack = (evasion) => {
-    const attackChance = Math.random() * 100;
-    let chance;
-    if (attackChance >= evasion) {
-      chance = true
-    }
-    if (attackChance < evasion) {
-      chance = false
-    }
-    return chance
-  }
-
-  const getChanceMagic = (percents) => {
-    const attackChance = Math.random() * 100;
-    let chance = false;
-    if (attackChance <= percents) {
-      chance = true
-    } else {
-      chance = false
-    }
-    return chance;
+    return lootArr
   }
 
   const handleAttackCreep = () => {
@@ -75,7 +64,7 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
     let heroDefAfterAttack = hero.def;
     // army Damage
     let allHeroDmg, horsemenDmg, archersDmg, infantryDmg, mageDmg, humanDmg, elfDmg, gnomeDmg, valarDmg, morgoteDmg, critical, surprise;
-
+    //hero attack
     if (isAttackHero) {
       horsemenDmg = getRandomInt(hero.army.horsemen.minDmg * hero.army.horsemen.count, hero.army.horsemen.maxDmg * hero.army.horsemen.count)
       archersDmg = getRandomInt(hero.army.archers.minDmg * hero.army.archers.count, hero.army.archers.maxDmg * hero.army.archers.count)
@@ -103,16 +92,39 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
       }
 
       creepHpAfterAttack = creepHpAfterAttack - allHeroDmg
-      setCreeps({ ...creeps, hp: creepHpAfterAttack })
+
+
+      if (creepHpAfterAttack <= 0) {
+        setCreeps({ ...creeps, hp: 0 })
+        setCreepHpBar(0)
+        setLoot(prepareLootArr())
+      } else {
+        setCreeps({ ...creeps, hp: creepHpAfterAttack })
+        setCreepHpBar(parseInt((creepHpAfterAttack / creeps.hp) * 100))
+      }
+
     } else {
       allHeroDmg = 'Промах'
     }
 
+
+    //creep attack
     let creepDmg;
     if (isAttackCreeps) {
       creepDmg = creepHpAfterAttack > 0 ? getRandomInt(creeps.dmg.min, creeps.dmg.max) : 0  /// if draw(ничья) dmg = 0
       heroDefAfterAttack = hero.def - creepDmg
-      setHero({ ...hero, def: heroDefAfterAttack })
+
+      if (heroDefAfterAttack <= 0) {
+        setHeroHpBar(0)
+        setHero({ ...hero, def: 0 })
+      } else if(creepDmg === 0) {
+        setHero({ ...hero, def: heroDefAfterAttack })
+      } 
+      else {
+        setHero({ ...hero, def: heroDefAfterAttack })
+        setHeroHpBar(parseInt((heroDefAfterAttack / hero.def) * 100))
+      }
+
     } else {
       creepDmg = 'Промах'
     }
@@ -137,7 +149,10 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
       <div className="fightArea__fight">
         {hero &&
           <div className="fightArea__hero fightArea__item">
-            <div className='fightArea__itemTitle'>Оборона:{hero.def}</div>
+            <div className='fightArea__itemTitle'>
+              Оборона:{hero.def}
+              <div className="fightArea__hitBar fightArea__hitBar--hero" style={{ 'width': heroHpBar + '%' }}></div>
+            </div>
             <img src={heroImg} alt="hero" />
           </div>
         }
@@ -151,10 +166,14 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
           <>
             <div className="fightArea__creep fightArea__item">
               <div className="fightArea__infoContainer">
-                <div className='fightArea__creepInfo fightArea__itemTitle'>{creeps.name} Здоровье:{creeps.hp} </div>
+                <div className='fightArea__hpBar fightArea__itemTitle'>
+                  {creeps.name} Здоровье:{creeps.hp}
+                  <div className="fightArea__hitBar" style={{ 'width': creepHpBar + '%' }}></div>
+                </div>
                 <img src={creepImg} alt="creep" />
               </div>
-              <div className='fightArea__infoContainer'>
+              
+              {/* <div className='fightArea__infoContainer'>
                 <h3>Кол-во: {creeps.count}</h3>
                 <div>Усиление: {creeps.buff}</div>
                 <div>Уворот: {creeps.evasion}%</div>
@@ -163,7 +182,7 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
                 <div>Увеличение добычи: 0%</div>
                 {creeps.dmg && <div>Атака: {creeps.dmg.min} - {creeps.dmg.max}</div>}
                 {creepData && <div>Здоровье: {creepData.hp * creepsCount}</div>}
-              </div>
+              </div> */}
             </div>
           </>
         }
@@ -197,6 +216,17 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
                 }
 
               </p>
+            ))
+          }
+        </div>
+      </div>
+      <div className="fightArea__logsContainer">
+        <h2>Добыча:</h2>
+        <div className="fightArea__logs fightArea__loot">
+          {
+            fightResult === 'Победа' &&
+            loot.map(item => (
+              <div>{item.itemName}</div>
             ))
           }
         </div>
