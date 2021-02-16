@@ -7,6 +7,9 @@ const CreepSchema = new Schema({
     required: true,
     unique: true,
   },
+  img: {
+    type: String,
+  },
   hp: {
     type: Number,
     default: 20,

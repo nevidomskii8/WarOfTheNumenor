@@ -3,22 +3,22 @@ const creepsRouter = Router();
 require('express-async-errors')
 const CreepModel = require('../models/CreepModel')
 
+creepsRouter.get('/', async (req, res) => {
+  const name = req.query.name
+  const creep = await CreepModel.findOne({ name: name });
 
-creepsRouter.get('/',async (req,res) => {
-  const creeps = await CreepModel.find({});
-  res.status(200).json(creeps)
-})
-
-
-creepsRouter.get('/:name',async (req,res) => {
-  const creep = await CreepModel.find({name: req.params.name});
-  
   if (!creep) {
     res.status(400).send({ error: 'creep not found' });
     return
   } else {
     res.status(200).send(creep);
   }
+})
+
+creepsRouter.post('/locationCreeps', async (req, res) => {
+  const namesArr = req.body
+  const creeps = await CreepModel.find({name: {$in: namesArr}})
+  res.status(201).send(creeps);
 })
 
 creepsRouter.post('/', async (req, res) => {

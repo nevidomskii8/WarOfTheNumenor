@@ -1,58 +1,62 @@
-import React, { useState } from 'react'
+import React,{useState} from 'react'
 import './Location.scss'
 import woods from '../../assets/png/woods.png'
-import woods2 from '../../assets/png/woods2.png'
-import wolf from '../../assets/png/wolf.png'
-import witch from '../../assets/png/witch.png'
+import config from '../../config/default.json'
 import { useDispatch } from 'react-redux'
-import { selectedCreepInLocation } from '../../redux/actions/locationAction'
-import { getSelectedCreep } from '../../redux/selectors/locationSelector'
+import { selectedCreepInLocation, selectLocationType, selectLocLvl, selectLocation, fetchLocation, fetchCreepsInLocation } from '../../redux/actions/locationAction'
+import { getSelectedType, getSelectedLvl,getSelectedCreep, getSelectedLoc, getDataLocations, getCreeps } from '../../redux/selectors/locationSelector'
 import { useSelector } from 'react-redux'
 import getRandomInt from '../../helpers/getRandomInt'
 
-export default function Location({ className,creepData }) {
-  const [activeItem, setActiveItem] = useState('Охота')
-  const [activeLvl, setActiveLvl] = useState('')
-  const [activeLocation, setActiveLocation] = useState('')
-  const selectedCreep = useSelector(getSelectedCreep)
-
-  const creepsCount = getRandomInt(1,9);
-
+export default function Location({ className,creepData,creepsCount }) {
   const dispatch = useDispatch()
+  const activeItemType = useSelector(getSelectedType) // type
+  const activeLvl = useSelector(getSelectedLvl)       // lvl
+  const activeLocation = useSelector(getSelectedLoc)  // loca
+  const creeps = useSelector(getCreeps)
+
+  const locations = useSelector(getDataLocations)     //location arr 
 
   const handleChangeActiveItem = (item) => {
-    setActiveItem(item)
-    setActiveLvl('')
+    dispatch(selectLocationType(item))
+    dispatch(selectLocLvl(''))
     dispatch(selectedCreepInLocation(''))
   }
 
   const handleChangeActiveLvl = (lvl) => {
-    setActiveLvl(lvl)
-    setActiveLocation('')
+    dispatch(fetchLocation(lvl))
+    dispatch(selectLocLvl(lvl))
+    dispatch(selectLocation(''))
     dispatch(selectedCreepInLocation(''))
   }
+
+  const handleChangeLocation = (location) => {
+    dispatch(selectLocation(location.name))
+    dispatch(fetchCreepsInLocation(location.creeps))
+  }
+
 
   return (
     <div className={`location ${className}`}>
       {/* Охота, поход, рейд, пвп */}
       <ul className="location__nav">
-        <li className={`location__navItem ${activeItem === 'Охота' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("Охота")}>
+        <li className={`location__navItem ${activeItemType === 'Охота' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("Охота")}>
           Охота
         </li>
-        <li className={`location__navItem ${activeItem === 'Поход' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("Поход")}>
+        <li className={`location__navItem ${activeItemType === 'Поход' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("Поход")}>
           Поход
         </li>
-        <li className={`location__navItem ${activeItem === 'Рейд' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("Рейд")}>
+        <li className={`location__navItem ${activeItemType === 'Рейд' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("Рейд")}>
           Рейд (с 3 уровня)
         </li>
-        <li className={`location__navItem ${activeItem === 'ПВП' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("ПВП")}>
+        <li className={`location__navItem ${activeItemType === 'ПВП' && 'location__navItem--active'}`} onClick={() => handleChangeActiveItem("ПВП")}>
           ПВП(с 4 уровня)
         </li>
       </ul>
 
       {/* слабый, обычный, средний... */}
       {
-        activeItem === 'Охота' &&
+        activeItemType === 'Охота' &&
         <div className='location__difficultyLvls'>
           <div className="location__difficultyItem" onClick={() => handleChangeActiveLvl('Слабый')}>
             <span>1-9</span>
@@ -102,17 +106,15 @@ export default function Location({ className,creepData }) {
         </div>
       }
 
-
-      {/* Легкий лес1, легкий лес2 */}
+      {/* Локации */}
       {
-        activeLvl === 'Слабый' && !activeLocation &&
+        activeLvl && !activeLocation &&
         <div className='location__itemsContainer' >
-          <div className="location__item" onClick={() => setActiveLocation('Сказочная поляна')}>
-            <img src={woods} alt="location" className="location__itemImg" />
-          </div>
-          <div className="location__item" onClick={() => setActiveLocation('Лесная поляна')}>
-            <img src={woods2} alt="location" className="location__itemImg" />
-          </div>
+          {locations.map(loc => (
+            <div className="location__item" onClick={() => handleChangeLocation(loc)}>
+              <img src={woods} alt="location" className="location__itemImg" />
+            </div>
+          ))}
         </div>
       }
 
@@ -120,26 +122,24 @@ export default function Location({ className,creepData }) {
       {activeLocation &&
         <div className='creeps'>
           <div className='creeps__btns'>
-            <button type='button' onClick={() => setActiveLocation('')}>Назад</button>
+            <button type='button' onClick={() => handleChangeLocation('')}>Назад</button>
             <h3>{activeLocation}</h3>
             <button type='button'>Обновить</button>
           </div>
-          {
-            activeLocation === 'Сказочная поляна' &&
-            <div className='creeps__items'>
-              <div className="creeps__item" onClick={() => dispatch(selectedCreepInLocation('Волк'))}>
-                <img src={wolf} alt="волк" />
-              </div>
-              {/* <div className="creeps__item" onClick={() => dispatch(selectedCreepInLocation('Ведьма'))}> Ведьма
-                <img src={witch} alt="ведьма" />
-              </div> */}
-            </div>
-
-          }
+          <div className='creeps__items'>
+            {
+              creeps.map((creep,i ) => (
+                <div key={i} className="creeps__item" onClick={() => dispatch(selectedCreepInLocation(creep.name))}>
+                  <img className='creeps__img' src={`${config.serverUrl}/api/images/${creep.img}`} alt={creep.name} />
+                </div>
+              ))
+            }
+          </div>
         </div>
       }
+
       {
-        selectedCreep &&
+        creepData.name &&
         <div className='fightArea__infoContainer'>
           <h3>Кол-во: {creepsCount}</h3>
           <div>Усиление: {creepData.buff}</div>
@@ -147,7 +147,7 @@ export default function Location({ className,creepData }) {
           {creepData.crit && <div>Шанс крита: {creepData.crit.chance}%</div>}
           {creepData.crit && <div>Урон крита: {creepData.crit.dmg}%</div>}
           <div>Увеличение добычи: 0%</div>
-          {creepData.dmg && <div>Атака: {creepData.dmg.min} - {creepData.dmg.max}</div>}
+          {creepData.dmg && <div>Атака: {creepData.dmg.min * creepsCount} - {creepData.dmg.max * creepsCount}</div>}
           {creepData && <div>Здоровье: {creepData.hp * creepsCount}</div>}
         </div>
       }
