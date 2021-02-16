@@ -71,9 +71,10 @@
   }
   &__item {
     margin-right: 0.5%;
-  }
-  &__item {
     cursor: pointer;
   }
-  
+  &__img {
+    width: 136px;
+    height: 136px;
+  }
 }

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import creepImg from '../../assets/png/creep.png'
 import heroImg from '../../assets/png/hero.png'
 import './FightArea.scss'
 import getRandomInt from '../../helpers/getRandomInt'
 import { getChanceAttack, getChanceMagic } from '../../helpers/getChance'
+import config from '../../config/default.json'
+import noneImg from '../../assets/png/none.png'
 
 export default function FightArea({ heroData, creepData, creepsCount }) {
   const [hero, setHero] = useState({})
@@ -21,7 +22,7 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
 
   //all creeps
   useEffect(() => {
-    creepData && setCreeps({
+    creepData.name && setCreeps({
       name: creepData.name,
       hp: creepData.hp * creepsCount,
       dmg: {
@@ -36,6 +37,7 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
         chance: creepData.crit.chance,
         dmg: creepData.crit.dmg
       },
+      img: creepData.img,
       count: creepsCount
     })
 
@@ -117,9 +119,9 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
       if (heroDefAfterAttack <= 0) {
         setHeroHpBar(0)
         setHero({ ...hero, def: 0 })
-      } else if(creepDmg === 0) {
+      } else if (creepDmg === 0) {
         setHero({ ...hero, def: heroDefAfterAttack })
-      } 
+      }
       else {
         setHero({ ...hero, def: heroDefAfterAttack })
         setHeroHpBar(parseInt((heroDefAfterAttack / hero.def) * 100))
@@ -159,30 +161,28 @@ export default function FightArea({ heroData, creepData, creepsCount }) {
 
         <div className="fightArea__btnContainer">
           <span className='fightArea__vs'>VS</span>
-          <button className='fightArea__btnAttack' onClick={() => handleAttackCreep()}>Атака</button>
+          <button className='fightArea__btnAttack' onClick={() => handleAttackCreep()} disabled={!creepData.name}>Атака</button>
         </div>
 
-        {creeps &&
+        {creepData.name &&
           <>
             <div className="fightArea__creep fightArea__item">
-              <div className="fightArea__infoContainer">
-                <div className='fightArea__hpBar fightArea__itemTitle'>
-                  {creeps.name} Здоровье:{creeps.hp}
-                  <div className="fightArea__hitBar" style={{ 'width': creepHpBar + '%' }}></div>
-                </div>
-                <img src={creepImg} alt="creep" />
+              <div className='fightArea__hpBar fightArea__itemTitle'>
+                {creeps.name} Здоровье:{creeps.hp}
+                <div className="fightArea__hitBar" style={{ 'width': creepHpBar + '%' }}></div>
               </div>
-              
-              {/* <div className='fightArea__infoContainer'>
-                <h3>Кол-во: {creeps.count}</h3>
-                <div>Усиление: {creeps.buff}</div>
-                <div>Уворот: {creeps.evasion}%</div>
-                {creeps.crit && <div>Шанс крита: {creeps.crit.chance}%</div>}
-                {creeps.crit && <div>Урон крита: {creeps.crit.dmg}%</div>}
-                <div>Увеличение добычи: 0%</div>
-                {creeps.dmg && <div>Атака: {creeps.dmg.min} - {creeps.dmg.max}</div>}
-                {creepData && <div>Здоровье: {creepData.hp * creepsCount}</div>}
-              </div> */}
+              <img className="fightArea__creepImg" src={`${config.serverUrl}/api/images/${creeps.img}`} alt={creeps.name} />
+            </div>
+          </>
+        }
+        {!creepData.name &&
+          <>
+            <div className="fightArea__creep fightArea__item">
+              <div className='fightArea__hpBar fightArea__itemTitle'>
+                Найдите равного себе соперника
+                <div className="fightArea__hitBar" style={{ 'width': creepHpBar + '%' }}></div>
+              </div>
+              <img className="fightArea__creepImg" src={noneImg} alt='Поле' />
             </div>
           </>
         }
