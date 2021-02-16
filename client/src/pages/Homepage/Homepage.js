@@ -30,14 +30,13 @@ export default function Homepage() {
   return (
     <div className='home'>
       <div className="home__figthArea">
-        <HeroPanel hero={hero} className='home__heroPanel'/>
+        <HeroPanel hero={hero} className='home__heroPanel' />
         <FightArea heroData={hero} creepData={creep} creepsCount={creepsCount} />
         <Location className='home__location' creepData={creep} creepsCount={creepsCount}/>
       </div>
       <div className='home__nav'>
         <NavPanel />
       </div>
-
     </div>
   )
 }

@@ -1,0 +1,27 @@
+.forge{
+    max-width: 900px;
+}
+.forge__title {
+    margin: 0 auto;
+}
+.forge__craft{
+    margin-left: 52px;
+    max-width: 900px;
+}
+.btn-green-block{
+    padding: 5px 105px;
+    background-color: #00AF00;
+}
+
+.row__button{
+    display: flex;
+}
+.inventory__item{
+    height: 105px;
+    width: 105px;
+    background-color: #C4C4C4;
+}
+.inventory__list{
+    display: flex;
+    margin: 5px;
+}
