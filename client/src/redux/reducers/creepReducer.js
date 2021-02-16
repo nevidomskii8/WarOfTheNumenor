@@ -3,7 +3,7 @@ import { fetchCreep } from '../actions/creepAction'
 
 const initialState = {
   loading: false,
-  data: [],
+  data: {},
   error: null
 };
 

@@ -52,10 +52,6 @@
     }
   }
 
-  &__creep {
-    display: flex;
-    justify-content: flex-start;
-  }
 
   &__infoContainer {
     border: 1px solid #000;
@@ -85,5 +81,14 @@
     &--hero {
       background-color: #1CC500;
     }
+  }
+
+  &__creepImg {
+    width: 300px;
+    height: 300px;
+  }
+  &__item {
+    width: 300px;
+    height: 330px;
   }
 }
