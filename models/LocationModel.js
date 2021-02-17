@@ -5,7 +5,7 @@ const LocationSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
   },
   creeps: {
     type: Array,
@@ -14,6 +14,10 @@ const LocationSchema = new Schema({
   lvl: {
     type: String,
     default: "Слабый"
+  },
+  img: {
+    type: String,
+    default: "Волк",
   }
 });
 

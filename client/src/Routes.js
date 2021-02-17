@@ -3,6 +3,7 @@ import { Redirect, Route, Switch, BrowserRouter as Router } from "react-router-d
 import Homepage from './pages/Homepage/Homepage'
 import Forgepage from "./pages/Forgepage/Forgepage";
 
+
 export default function Routes() {
 
   return (

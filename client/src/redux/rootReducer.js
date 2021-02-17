@@ -1,12 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import { reducer as formReducer } from 'redux-form'
-import creepReducer from './reducers/creepReducer'
 import heroReducer from './reducers/heroReducer'
 import locationReducer from './reducers/locationReducer'
+import navReducer from './reducers/navReducer'
 
 export default combineReducers({
   hero: heroReducer,
-  creep: creepReducer,
   location: locationReducer,
+  nav: navReducer,
   form: formReducer
 })

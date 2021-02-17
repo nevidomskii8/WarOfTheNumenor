@@ -16,8 +16,15 @@ creepsRouter.get('/', async (req, res) => {
 })
 
 creepsRouter.post('/locationCreeps', async (req, res) => {
-  const namesArr = req.body
-  const creeps = await CreepModel.find({name: {$in: namesArr}})
+  const namesArr = req.body[0]
+  const arr = req.body[1]
+  const min = arr[0]
+  const max = arr[1]
+
+  const creeps = await CreepModel.aggregate([{$match: {name: {$in: namesArr}}},{$addFields:{count:{ $floor:
+    {$sum: [{ $multiply: [ { $rand: {} }, max - min ] }, min]}
+ } }}])
+
   res.status(201).send(creeps);
 })
 
