@@ -46,7 +46,7 @@ export default function Forge() {
           <div className="merge">Объединить вещи</div>
           <img src="../../assets/png/ring_snake.png" />
           <img src="../../assets/png/ring_snake.png" />
-          <div className="pointer">-------></div>
+          <div className="pointer"></div>
           <div className="item"></div>
         </div>
         <div className="inventory">

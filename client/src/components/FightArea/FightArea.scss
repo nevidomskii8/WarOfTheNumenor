@@ -1,6 +1,6 @@
 .fightArea {
   width: 37%;
-
+ 
   &__fight {
     display: flex;
     justify-content: space-between;
@@ -24,9 +24,8 @@
   }
 
   &__btnContainer {
-    display:flex;
+    display: flex;
     flex-direction: column;
-
   }
 
   &__logs {
@@ -44,14 +43,13 @@
 
   &__fightResult {
     text-align: center;
-    color: #00FF2A;
+    color: #00ff2a;
     font-size: 1.2rem;
-    
+
     &--defeat {
-      color: #FF0000;
+      color: #ff0000;
     }
   }
-
 
   &__infoContainer {
     border: 1px solid #000;
@@ -72,23 +70,71 @@
   &__hitBar {
     width: 100%;
     height: 100%;
-    background-color: #FF5858;
+    background-color: #ff5858;
     display: block;
     position: absolute;
     top: 0;
     z-index: -1;
 
     &--hero {
-      background-color: #1CC500;
+      background-color: #1cc500;
     }
   }
 
   &__creepImg {
     width: 300px;
     height: 300px;
+
+    &--none {
+      position: absolute;
+      top: 15px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+    }
   }
   &__item {
     width: 300px;
     height: 330px;
+    position: relative;
+  }
+
+  &__btnContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  &__btnStart {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    background: #04dc00;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    width: 50%;
+    outline: none;
+
+    &:hover {
+      background-color: #00AF00;
+    }
+  }
+
+  &__loot {
+    display: grid;
+    border: 1px solid #000;
+    grid-template-columns: repeat(10,8%);
+    gap: 10px;
+    padding: 0.5%;
+  }
+
+  &__lootItem {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;
+    cursor: pointer;
   }
 }

@@ -1,11 +1,15 @@
 import React from 'react'
 import './NavPanel.scss'
+import {useDispatch} from 'react-redux'
+import { openBackpack } from '../../redux/actions/navAction'
 
 export default function NavPanel() {
+  const dispatch = useDispatch()
+
   return (
     <ul className='nav'>
-      <li className="nav__item nav__item--backpack">
-        <span className="nav__text">Сундук добычи</span>
+      <li onClick={() => dispatch(openBackpack(true))} className="nav__item nav__item--backpack">
+        <span  className="nav__text">Сундук добычи</span>
       </li>
       <li className="nav__item nav__item--altar">
         <span className="nav__text">Алтарь Эссенций</span></li>

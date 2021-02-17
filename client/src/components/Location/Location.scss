@@ -44,9 +44,8 @@
   }
 
   &__itemsContainer {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3,33%);
   }
 
   &__item {
@@ -60,6 +59,8 @@
 }
 
 .creeps {
+
+
   &__btns {
     display: flex;
     justify-content: flex-start;
@@ -72,9 +73,31 @@
   &__item {
     margin-right: 0.5%;
     cursor: pointer;
+    position: relative;
   }
   &__img {
     width: 136px;
     height: 136px;
+  }
+  &__count {
+    position: absolute;
+    color: #fff;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  &__infoContainer {
+    border: 1px solid #000;
+    display: grid;
+    grid-template-columns: repeat(2,50%);
+  }
+
+  &__lootImg {
+    width: 40px;
+    height: 40px;
+  }
+  &__lootItem {
+    display: flex;
+    align-items: center;
   }
 }

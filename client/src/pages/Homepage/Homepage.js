@@ -5,34 +5,31 @@ import { fetchHero } from '../../redux/actions/heroAction'
 import { getHero } from '../../redux/selectors/heroSelector'
 import FightArea from '../../components/FightArea/FightArea'
 import './Homepage.scss'
-import { fetchCreep } from '../../redux/actions/creepAction'
-import { getCreep } from '../../redux/selectors/creepSelector'
 import NavPanel from '../../components/NavPanel/NavPanel'
 import Location from '../../components/Location/Location'
-import { getSelectedCreep, getSelectedLvl } from '../../redux/selectors/locationSelector'
-import getCountByLvl from '../../helpers/getCountByLvl'
+import { getSelectedCreep } from '../../redux/selectors/locationSelector'
+import BackpackPopup from '../../components/BackpackPopup/BackpackPopup'
+import { isOpenBackpack } from '../../redux/selectors/navSelector'
+
 
 export default function Homepage() {
   const adminLogin = 'admin'
-  const creepsCount = getCountByLvl('Слабый')
   const selectedCreepInLocation = useSelector(getSelectedCreep)
-
+  const isBackpack = useSelector(isOpenBackpack)
   const dispatch = useDispatch()
   const hero = useSelector(getHero)
-  const creep = useSelector(getCreep)
-  
 
   useEffect(() => {
     dispatch(fetchHero(adminLogin))
-    dispatch(fetchCreep(selectedCreepInLocation))
-  }, [selectedCreepInLocation])
+  }, [adminLogin])
 
   return (
     <div className='home'>
+      {isBackpack && <BackpackPopup />}
       <div className="home__figthArea">
         <HeroPanel hero={hero} className='home__heroPanel' />
-        <FightArea heroData={hero} creepData={creep} creepsCount={creepsCount} />
-        <Location className='home__location' creepData={creep} creepsCount={creepsCount}/>
+        <FightArea heroData={hero} creepData={selectedCreepInLocation} />
+        <Location className='home__location' creepData={selectedCreepInLocation}/>
       </div>
       <div className='home__nav'>
         <NavPanel />
