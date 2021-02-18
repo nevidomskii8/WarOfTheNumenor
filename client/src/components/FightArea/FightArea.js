@@ -8,6 +8,7 @@ import noneImg from '../../assets/png/none.png'
 import { useDispatch } from 'react-redux'
 import { selectedCreepInLocation, selectLocLvl, selectLocation, fetchLocation } from '../../redux/actions/locationAction'
 import { fetchHero } from '../../redux/actions/heroAction'
+import {mathCount} from '../../helpers/mathCount'
 
 export default function FightArea({ heroData, creepData }) {
   const dispatch = useDispatch()
@@ -189,7 +190,7 @@ export default function FightArea({ heroData, creepData }) {
           <>
             <div className="fightArea__creep fightArea__item">
               <div className='fightArea__hpBar fightArea__itemTitle'>
-                {creeps.name} Здоровье:{creeps.hp}
+                {creeps.name} Здоровье:{mathCount(creeps.hp)}
                 <div className="fightArea__hitBar" style={{ 'width': creepHpBar + '%' }}></div>
               </div>
               <img className="fightArea__creepImg" src={`${config.serverUrl}/api/images/${creeps.img}`} alt={creeps.name} />
@@ -249,7 +250,7 @@ export default function FightArea({ heroData, creepData }) {
           <>
             <h2>Добыча:</h2>
             <div className="fightArea__loot">
-              {loot.map(item => (
+              {loot && loot.map(item => (
                 <img src={`${config.serverUrl}/api/images/${item.img}`} alt={item.itemName} className='fightArea__lootItem' title={item.itemName} />
               ))}
             </div>

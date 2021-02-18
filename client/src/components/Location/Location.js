@@ -6,6 +6,7 @@ import { selectedCreepInLocation, selectLocationType, selectLocLvl, selectLocati
 import { getSelectedType, getSelectedLvl, getSelectedCreep, getSelectedLoc, getDataLocations, getCreeps } from '../../redux/selectors/locationSelector'
 import { useSelector } from 'react-redux'
 import getCountByLvl from '../../helpers/getCountByLvl'
+import {mathCount} from '../../helpers/mathCount'
 
 export default function Location({ className, creepData }) {
 
@@ -52,6 +53,7 @@ export default function Location({ className, creepData }) {
     handleChangeLocation('')
     dispatch(selectedCreepInLocation(''))
   }
+
 
   return (
     <div className={`location ${className}`}>
@@ -148,7 +150,7 @@ export default function Location({ className, creepData }) {
               creeps.map((creep, i) => (
                 <div key={i} className="creeps__item" onClick={() => handleSelectCreep(creep)}>
                   <img className='creeps__img' src={`${config.serverUrl}/api/images/${creep.img}`} alt={creep.name} />
-                  <span className='creeps__count'>{creep.count}</span>
+                  <span className='creeps__count'>{mathCount(creep.count)}</span>
                 </div>
               ))
             }
@@ -160,21 +162,21 @@ export default function Location({ className, creepData }) {
         creepData.name && activeLocation &&
         <div className='creeps__infoContainer'>
           <div className='creeps__info'>
-            <h3>Кол-во: {creepData.count}</h3>
+            <h3>Кол-во: {mathCount(creepData.count)}</h3>
             <div>Усиление: {creepData.buff}%</div>
             <div>Уворот: {creepData.evasion}%</div>
             {creepData.crit && <div>Шанс крита: {creepData.crit.chance}%</div>}
             {creepData.crit && <div>Урон крита: {creepData.crit.dmg}%</div>}
             <div>Увеличение добычи: 0%</div>
-            {creepData.dmg && <div>Атака: {creepData.dmg.min * creepData.count} - {creepData.dmg.max * creepData.count}</div>}
-            {creepData && <div>Здоровье: {creepData.hp * creepData.count}</div>}
+            {creepData.dmg && <div>Атака: {mathCount(creepData.dmg.min * creepData.count)} - {mathCount(creepData.dmg.max * creepData.count)}</div>}
+            {creepData && <div>Здоровье: {mathCount(creepData.hp * creepData.count)}</div>}
           </div>
           <div className="creeps__info">
             <h3>Возможный лут</h3>
-            
+
             {
               creepData.loot.map(item => (
-                <div className='creeps__lootItem'><img className='creeps__lootImg' src={`${config.serverUrl}/api/images/${item.img}`} alt={item.itemName}/>{item.itemName} Шанс: {item.chance}</div>
+                <div className='creeps__lootItem'><img className='creeps__lootImg' src={`${config.serverUrl}/api/images/${item.img}`} alt={item.itemName} />{item.itemName} Шанс: {item.chance}</div>
               ))
             }
           </div>

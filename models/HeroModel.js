@@ -29,11 +29,11 @@ const HeroSchema = new Schema({
   },
   attack: {
     minDmg: {
-      type:Number,
-      default:1,
+      type: Number,
+      default: 1,
     },
     maxDmg: {
-      type:Number,
+      type: Number,
       default: 15,
     }
   },
@@ -51,7 +51,7 @@ const HeroSchema = new Schema({
     horsemen: {
       minionHp: {
         type: Number,
-        default:1
+        default: 1
       },
       minDmg: {
         type: Number,
@@ -69,7 +69,7 @@ const HeroSchema = new Schema({
     archers: {
       minionHp: {
         type: Number,
-        default:1
+        default: 1
       },
       minDmg: {
         type: Number,
@@ -87,7 +87,7 @@ const HeroSchema = new Schema({
     infantry: {
       minionHp: {
         type: Number,
-        default:1
+        default: 1
       },
       minDmg: {
         type: Number,
@@ -178,7 +178,7 @@ const HeroSchema = new Schema({
     },
     surprise: {
       chance: {
-        type:Number,
+        type: Number,
         default: 10,
       },
       dmg: {
@@ -202,15 +202,165 @@ const HeroSchema = new Schema({
     }
   },
   backpack: {
-    type: Array,
-    default: [{itemName:'Эссенция мага'}]
-  }
+    type: Object,
+    default: {
+      size: 36,
+      items: [
+        {
+          itemName: 'Эссенция мага',
+          img: 'ЭссенцияМага.png',
+          type: 'essense'
+        },
+        {
+          itemName: 'Эссенция человека',
+          img: 'ЭссенцияЧеловека.png',
+          type: 'essense',
+        },
+        {
+          itemName: 'Меч моргота',
+          stats:{
+            dmg: 20,
+          },
+          type: 'weapon',
+          img: 'МечМоргота.png'
+        },
+        {
+          itemName: 'Кольцо моргота',
+          stats:{
+            def: 20,
+          },
+          type: 'ring',
+          img: 'КольцоМоргота.png'
+        },
+        {
+          itemName: 'Кираса моргота',
+          stats:{
+            def: 20,
+          },
+          type: 'cuirass',
+          img: 'КирасаМоргота.png'
+        },
+        {
+          itemName: 'Перчатки моргота',
+          stats:{
+            def: 20,
+          },
+          type: 'gloves',
+          img: 'ПерчаткиМоргота.png'
+        },
+        {
+          itemName: 'Ботинки моргота',
+          stats:{
+            def: 20,
+          },
+          type: 'boots',
+          img: 'БотинкиМоргота.png'
+        },
+        {
+          itemName: 'Шлем моргота',
+          stats:{
+            def: 20,
+          },
+          type: 'helm',
+          img: 'ШлемМоргота.png'
+        },
+      ],
+      equipment: {
+        mag: {
+          helm: {
+            type:Object,
+            itemName: '',
+          },
+          weapon: {
+            type:Object,
+
+          },
+          gloves: {
+            type:Object,
+
+          },
+          ring: {
+            type:Object,
+
+          },
+          boots: {
+            type:Object,
+
+          },
+        },
+        human: {
+          helm: {
+            type:Object,
+          },
+          weapon: {
+            type:Object,
+
+          },
+          gloves: {
+            type:Object,
+          },
+          ring: {
+            type:Object,
+          },
+          boots: {
+            type:Object,
+            default: {}
+          },
+        },
+        elf: {
+          helm: {
+            type:Object,
+            default: {}
+          },
+          weapon: {
+            type:Object,
+            default: {}
+          },
+          gloves: {
+            type:Object,
+            default: {}
+          },
+          ring: {
+            type:Object,
+            default: {}
+          },
+          boots: {
+            type:Object,
+            default: {}
+          },
+        },
+        gnome: {
+          helm: {
+            type:Object,
+            default: {}
+          },
+          weapon: {
+            type:Object,
+            default: {}
+          },
+          gloves: {
+            type:Object,
+            default: {}
+          },
+          ring: {
+            type:Object,
+            default: {}
+          },
+          boots: {
+            type:Object,
+            default: {}
+          },
+        }
+      }
+    }
+  },
+  
 
 });
 
 HeroSchema.methods.auth = function (password) {
   return bcrypt.compare(password, this.password).then(result => {
-    if(result) {
+    if (result) {
       return jwt.sign({ _id: this._id }, secret);
     }
   })
@@ -218,7 +368,7 @@ HeroSchema.methods.auth = function (password) {
 
 HeroSchema.statics.verifyToken = function (token) {
   return new Promise((res, rej) => {
-    jwt.verify(token, secret, function(err, decoded) {
+    jwt.verify(token, secret, function (err, decoded) {
       if (err) return rej(err);
       return res(decoded);
     });

@@ -5,7 +5,6 @@ const LocationSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: false,
   },
   creeps: {
     type: Array,
