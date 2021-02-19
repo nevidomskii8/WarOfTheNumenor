@@ -268,24 +268,23 @@ const HeroSchema = new Schema({
       equipment: {
         mag: {
           helm: {
-            type:Object,
-            itemName: '',
+            _id: {
+              type:mongoose.ObjectId,
+              default: null
+            },
           },
           weapon: {
-            type:Object,
-
+            _id: {type:mongoose.ObjectId},
           },
           gloves: {
-            type:Object,
-
+            _id: {type:mongoose.ObjectId},
           },
           ring: {
-            type:Object,
-
+            _id: {type:mongoose.ObjectId},
           },
           boots: {
             type:Object,
-
+            _id: {type:mongoose.ObjectId},
           },
         },
         human: {

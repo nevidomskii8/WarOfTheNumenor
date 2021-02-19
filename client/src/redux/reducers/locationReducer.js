@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { selectedCreepInLocation, selectLocationType, selectLocLvl, fetchLocation, selectLocation,fetchCreepsInLocation } from '../actions/locationAction'
+import { selectedCreepInLocation, selectLocationType, selectLocLvl, fetchLocation, selectLocation,fetchCreepsInLocation,setCreepVictory } from '../actions/locationAction'
 
 const initialState = {
   selectedType: 'Охота',
@@ -55,6 +55,10 @@ const creepReducer = createReducer(initialState, {
     state.creeps.loading = false;
     state.creeps.error = action.payload;
   },
+  [setCreepVictory.type]: (state, action) => {
+    state.creeps.data[action.payload[0]].isVictory = action.payload[1];
+  },
+  
 });
 
 export default creepReducer

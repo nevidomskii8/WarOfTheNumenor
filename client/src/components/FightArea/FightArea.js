@@ -5,21 +5,20 @@ import getRandomInt from '../../helpers/getRandomInt'
 import { getChanceAttack, getChanceMagic } from '../../helpers/getChance'
 import config from '../../config/default.json'
 import noneImg from '../../assets/png/none.png'
-import { useDispatch } from 'react-redux'
-import { selectedCreepInLocation, selectLocLvl, selectLocation, fetchLocation } from '../../redux/actions/locationAction'
-import { fetchHero } from '../../redux/actions/heroAction'
+import { useDispatch,useSelector } from 'react-redux'
+import { selectedCreepInLocation, selectLocLvl, selectLocation, fetchLocation,setCreepVictory } from '../../redux/actions/locationAction'
+import {getCreeps} from '../../redux/selectors/locationSelector'
 import {mathCount} from '../../helpers/mathCount'
 
-export default function FightArea({ heroData, creepData }) {
+export default function FightArea({ heroData, creepData,handleStartNewFight,setFightResult,fightResult,logs,setLogs,setCreepHpBar,creepHpBar,setHeroHpBar,heroHpBar }) {
   const dispatch = useDispatch()
   const [hero, setHero] = useState({})
   const [creeps, setCreeps] = useState({})
-  const [logs, setLogs] = useState([]) // [[heroDmg,creepDmg], ...]
-  const [fightResult, setFightResult] = useState('')
-  const [clickCounter, setClickCounter] = useState(0)
-  const [heroHpBar, setHeroHpBar] = useState(100)
-  const [creepHpBar, setCreepHpBar] = useState(100)
+  const creepsState = useSelector(getCreeps)
   const [loot, setLoot] = useState([])
+  const [clickCounter, setClickCounter] = useState(0)
+
+
   useEffect(() => {
     heroData && setHero(heroData)
   }, [heroData])
@@ -138,9 +137,22 @@ export default function FightArea({ heroData, creepData }) {
 
     setLogs([...logs, { allHeroDmg: allHeroDmg, horsemenDmg: horsemenDmg, archersDmg: archersDmg, infantryDmg: infantryDmg, creepDmg: creepDmg, mageDmg: mageDmg, humanDmg: humanDmg, elfDmg: elfDmg, gnomeDmg: gnomeDmg, valarDmg: valarDmg, morgoteDmg: morgoteDmg, critical: critical, surprise: surprise }])
 
-    if (creepHpAfterAttack <= 0) setFightResult('Победа')
-    if (heroDefAfterAttack <= 0) setFightResult('Поражение')
-    if (heroDefAfterAttack <= 0 && creepHpAfterAttack <= 0) setFightResult('Ничья')
+    if (creepHpAfterAttack <= 0) {
+      setFightResult('Победа')
+      const indexCreep = creepsState.findIndex(creep => creep.name === creepData.name)
+      dispatch(setCreepVictory([indexCreep,true]))
+
+    }
+    if (heroDefAfterAttack <= 0) {
+      setFightResult('Поражение')
+      const indexCreep = creepsState.findIndex(creep => creep.name === creepData.name)
+      dispatch(setCreepVictory([indexCreep,true]))
+    }
+    if (heroDefAfterAttack <= 0 && creepHpAfterAttack <= 0) {
+      setFightResult('Ничья')
+      const indexCreep = creepsState.findIndex(creep => creep.name === creepData.name)
+      dispatch(setCreepVictory([indexCreep,true]))
+    }
   }
 
   const handleChangeActiveLvl = (lvl) => {
@@ -150,16 +162,6 @@ export default function FightArea({ heroData, creepData }) {
     dispatch(selectedCreepInLocation(''))
   }
 
-  const handleStartNewFight = () => {
-    dispatch(fetchHero('admin'))
-    dispatch(selectLocLvl(''))
-    dispatch(selectLocation(''))
-    dispatch(selectedCreepInLocation(''))
-    setFightResult('')
-    setHeroHpBar(100)
-    setCreepHpBar(100)
-    setLogs([])
-  }
 
   return (
     <div className='fightArea'>
@@ -251,7 +253,7 @@ export default function FightArea({ heroData, creepData }) {
             <h2>Добыча:</h2>
             <div className="fightArea__loot">
               {loot && loot.map(item => (
-                <img src={`${config.serverUrl}/api/images/${item.img}`} alt={item.itemName} className='fightArea__lootItem' title={item.itemName} />
+                item && <img src={item && item.img ? `${config.serverUrl}/api/images/${item.img}` : `${config.serverUrl}/api/images/ЭссенцияЧеловека.png`} alt={item.itemName} className='fightArea__lootItem' title={item.itemName} /> /// loot problem
               ))}
             </div>
             <button>Забрать все</button>

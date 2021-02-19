@@ -8,12 +8,13 @@ import { useSelector } from 'react-redux'
 import getCountByLvl from '../../helpers/getCountByLvl'
 import {mathCount} from '../../helpers/mathCount'
 
-export default function Location({ className, creepData }) {
+export default function Location({ className, creepData,handleStartNewFight }) {
 
   const dispatch = useDispatch()
   const activeItemType = useSelector(getSelectedType) // type
   const activeLvl = useSelector(getSelectedLvl)       // lvl
   const activeLocation = useSelector(getSelectedLoc)  // loca
+  const activeCreep = useSelector(getSelectedCreep)
   const creeps = useSelector(getCreeps)
 
   const locations = useSelector(getDataLocations)     //location arr 
@@ -41,6 +42,9 @@ export default function Location({ className, creepData }) {
   }
 
   const handleSelectCreep = (creep) => {
+    if(creep.name === activeCreep.name) return
+    if(creep.isVictory) return
+    handleStartNewFight()
     dispatch(selectedCreepInLocation(creep))
   }
 
@@ -148,7 +152,7 @@ export default function Location({ className, creepData }) {
           <div className='creeps__items'>
             {
               creeps.map((creep, i) => (
-                <div key={i} className="creeps__item" onClick={() => handleSelectCreep(creep)}>
+                <div key={i} className={`creeps__item ${creep.isVictory && 'creeps__item--inActive'}`} onClick={() => handleSelectCreep(creep)}>
                   <img className='creeps__img' src={`${config.serverUrl}/api/images/${creep.img}`} alt={creep.name} />
                   <span className='creeps__count'>{mathCount(creep.count)}</span>
                 </div>

@@ -7,3 +7,4 @@ export const fetchHero = createAsyncThunk('hero/fetchHero', async (login) => {
     res => res.data)
   return data;
 });
+
