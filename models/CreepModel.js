@@ -55,6 +55,10 @@ const CreepSchema = new Schema({
         grade: 'common'
       }
     ]
+  },
+  isVictory: {
+    type: Boolean,
+    default: false,
   }
 });
 

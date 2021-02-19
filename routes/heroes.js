@@ -21,6 +21,13 @@ heroesRouter.get('/:heroLogin',async (req,res) => {
   }
 })
 
+heroesRouter.put('/equip/:heroId', async (req, res) => {
+  const herodata = req.body
+  const hero = await HeroModel.findOneAndUpdate(req.params.heroId,herodata)
+
+  res.status(200).send(hero);
+})
+
 heroesRouter.post('/', async (req, res) => {
   const newHero = new HeroModel(req.body);
   const { _id } = await newHero.save();

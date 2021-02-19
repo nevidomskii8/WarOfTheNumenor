@@ -74,6 +74,21 @@
     margin-right: 0.5%;
     cursor: pointer;
     position: relative;
+
+    &--inActive {
+      &:before {
+        content: '';
+        width: 136px;
+        height: 136px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        background-image: url('../../assets/png/creepVictory.png');
+      }
+    }
   }
   &__img {
     width: 136px;
