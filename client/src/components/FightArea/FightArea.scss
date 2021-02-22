@@ -137,4 +137,37 @@
     background-color: #ccc;
     cursor: pointer;
   }
+
+  &__buffs {
+    display: flex;
+  }
+  &__buffsItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    cursor: pointer;
+  }
+  &__buffsImg {
+    width: 50px;
+    height: 50px;
+  }
+
+  &__btnContent {
+    position: relative;
+
+    &>span {
+      display: none;
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      z-index: 100;
+      background-color: #fff;
+    }
+
+    &:hover>span {
+      display: block;
+    }
+  }
 }

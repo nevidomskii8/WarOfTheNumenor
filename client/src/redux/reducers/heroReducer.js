@@ -19,7 +19,7 @@ const heroReducer = createReducer(initialState, {
   [fetchHero.rejected]: (state, action) => {
     state.loading = false;
     state.error = action.payload;
-  }
+  },
 });
 
 export default heroReducer

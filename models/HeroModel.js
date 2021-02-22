@@ -25,7 +25,7 @@ const HeroSchema = new Schema({
   },
   power: {
     type: Number,
-    default: 1,
+    default: 30,
   },
   attack: {
     minDmg: {
@@ -39,14 +39,24 @@ const HeroSchema = new Schema({
   },
   def: {
     type: Number,
+    default: 60
+  },
+  currentDef: {
+    type: Number,
     default: 60,
   },
   army: {
+    garrison: {
+      type: Number,
+      default: 15,
+    },
     minDmg: {
       type: Number,
+      default: 15,
     },
     maxDmg: {
       type: Number,
+      default: 45,
     },
     horsemen: {
       minionHp: {
@@ -190,11 +200,11 @@ const HeroSchema = new Schema({
   buffHp: {
     def: {
       type: Number,
-      default: 100,
+      default: 60,
     },
     armour: {
       type: Number,
-      default: 100,
+      default: 15,
     },
     evasion: {
       type: Number,
@@ -218,7 +228,7 @@ const HeroSchema = new Schema({
         },
         {
           itemName: 'Меч моргота',
-          stats:{
+          stats: {
             dmg: 20,
           },
           type: 'weapon',
@@ -226,7 +236,7 @@ const HeroSchema = new Schema({
         },
         {
           itemName: 'Кольцо моргота',
-          stats:{
+          stats: {
             def: 20,
           },
           type: 'ring',
@@ -234,7 +244,7 @@ const HeroSchema = new Schema({
         },
         {
           itemName: 'Кираса моргота',
-          stats:{
+          stats: {
             def: 20,
           },
           type: 'cuirass',
@@ -242,7 +252,7 @@ const HeroSchema = new Schema({
         },
         {
           itemName: 'Перчатки моргота',
-          stats:{
+          stats: {
             def: 20,
           },
           type: 'gloves',
@@ -250,7 +260,7 @@ const HeroSchema = new Schema({
         },
         {
           itemName: 'Ботинки моргота',
-          stats:{
+          stats: {
             def: 20,
           },
           type: 'boots',
@@ -258,7 +268,7 @@ const HeroSchema = new Schema({
         },
         {
           itemName: 'Шлем моргота',
-          stats:{
+          stats: {
             def: 20,
           },
           type: 'helm',
@@ -267,94 +277,43 @@ const HeroSchema = new Schema({
       ],
       equipment: {
         mag: {
-          helm: {
-            _id: {
-              type:mongoose.ObjectId,
-              default: null
-            },
-          },
-          weapon: {
-            _id: {type:mongoose.ObjectId},
-          },
-          gloves: {
-            _id: {type:mongoose.ObjectId},
-          },
-          ring: {
-            _id: {type:mongoose.ObjectId},
-          },
-          boots: {
-            type:Object,
-            _id: {type:mongoose.ObjectId},
-          },
+          helm: "",
+          weapon: "",
+          gloves: "",
+          ring: "",
+          boots: "",
         },
         human: {
-          helm: {
-            type:Object,
-          },
-          weapon: {
-            type:Object,
-
-          },
-          gloves: {
-            type:Object,
-          },
-          ring: {
-            type:Object,
-          },
-          boots: {
-            type:Object,
-            default: {}
-          },
+          helm: "",
+          weapon: "",
+          gloves: "",
+          ring: "",
+          boots: "",
         },
         elf: {
-          helm: {
-            type:Object,
-            default: {}
-          },
-          weapon: {
-            type:Object,
-            default: {}
-          },
-          gloves: {
-            type:Object,
-            default: {}
-          },
-          ring: {
-            type:Object,
-            default: {}
-          },
-          boots: {
-            type:Object,
-            default: {}
-          },
+          helm: "",
+          weapon: "",
+          gloves: "",
+          ring: "",
+          boots: "",
         },
         gnome: {
-          helm: {
-            type:Object,
-            default: {}
-          },
-          weapon: {
-            type:Object,
-            default: {}
-          },
-          gloves: {
-            type:Object,
-            default: {}
-          },
-          ring: {
-            type:Object,
-            default: {}
-          },
-          boots: {
-            type:Object,
-            default: {}
-          },
+          helm: "",
+          weapon: "",
+          gloves: "",
+          ring: "",
+          boots: "",
         }
       }
     }
   },
-  
-
+  isOnline: {
+    lastDate: {
+      type: Date,
+      default: Date.now()
+    },
+    
+  }
 });
 
 HeroSchema.methods.auth = function (password) {
@@ -373,6 +332,6 @@ HeroSchema.statics.verifyToken = function (token) {
     });
   })
 };
-const HeroModel = mongoose.model('heroes', HeroSchema);
+const HeroModel = mongoose.model('heroesIhor', HeroSchema);
 
 module.exports = HeroModel;

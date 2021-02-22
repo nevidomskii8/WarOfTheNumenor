@@ -6,6 +6,7 @@ require('express-async-errors');
 const apiRouter = require('./routes');
 const config = require('config');
 const mongoose = require('mongoose');
+const WebSocketServer = require('websocket').server;
 
 const app = express();
 app.use(cors());
@@ -48,5 +49,7 @@ async function start() {
     process.exit(1)
   }
 }
+
+
 
 start()

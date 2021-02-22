@@ -1,11 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { selectedCreepInLocation, selectLocationType, selectLocLvl, fetchLocation, selectLocation,fetchCreepsInLocation,setCreepVictory } from '../actions/locationAction'
+import { selectedCreepInLocation, selectLocationType, selectLocLvl, fetchLocation, selectLocation,fetchCreepsInLocation,setCreepVictory,setIsFighting } from '../actions/locationAction'
 
 const initialState = {
   selectedType: 'Охота',
   selectedLvl: null,
   selectedLoc: '',
   selectedCreep: '',
+  isFighting: false,
   locations: {
     loading: false,
     error: null,
@@ -57,6 +58,9 @@ const creepReducer = createReducer(initialState, {
   },
   [setCreepVictory.type]: (state, action) => {
     state.creeps.data[action.payload[0]].isVictory = action.payload[1];
+  },
+  [setIsFighting.type]: (state, action) => {
+    state.isFighting = action.payload;
   },
   
 });

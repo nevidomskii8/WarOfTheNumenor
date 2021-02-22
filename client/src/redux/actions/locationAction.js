@@ -12,6 +12,8 @@ export const selectedCreepInLocation = createAction('CHANGE_SELECTED_CREEP_IN_LO
 
 export const setCreepVictory = createAction('SET_CREEP_VICTORY')
 
+export const setIsFighting = createAction('SET_IS_FIGHTING')
+
 export const fetchLocation = createAsyncThunk('location/fetchLoc', async (lvl) => {
   const data = axios.get(`${config.serverUrl}/api/location?lvl=${lvl}`).then(
     res => res.data)

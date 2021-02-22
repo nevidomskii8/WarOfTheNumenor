@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import HeroPanel from '../../components/HeroPanel/HeroPanel'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchHero } from '../../redux/actions/heroAction'
+import { fetchHero,saveHeroData } from '../../redux/actions/heroAction'
 import { getHero } from '../../redux/selectors/heroSelector'
 import FightArea from '../../components/FightArea/FightArea'
 import './Homepage.scss'
@@ -11,27 +11,37 @@ import { getSelectedCreep } from '../../redux/selectors/locationSelector'
 import BackpackPopup from '../../components/BackpackPopup/BackpackPopup'
 import { isOpenBackpack } from '../../redux/selectors/navSelector'
 import {selectedCreepInLocation} from '../../redux/actions/locationAction'
+import axios from 'axios'
+import config from '../../config/default.json'
 
 export default function Homepage() {
+  const dispatch = useDispatch()
   const adminLogin = 'admin'
+
   const creepInLocation = useSelector(getSelectedCreep)
   const isBackpack = useSelector(isOpenBackpack)
-  const dispatch = useDispatch()
+ 
   const hero = useSelector(getHero)
   const [logs, setLogs] = useState([]) // [[heroDmg,creepDmg], ...]
   const [fightResult, setFightResult] = useState('')
-  const [heroHpBar, setHeroHpBar] = useState(100)
+  const [heroHpBar, setHeroHpBar] = useState()
   const [creepHpBar, setCreepHpBar] = useState(100)
 
   useEffect(() => {
     dispatch(fetchHero(adminLogin))
   }, [adminLogin])
 
+  useEffect(() => {
+    hero && setHeroHpBar(((hero.currentDef / hero.def) * 100))
+  }, [hero])
+
+
+  
   const handleStartNewFight = () => {
     dispatch(fetchHero(adminLogin))
     dispatch(selectedCreepInLocation(''))
     setFightResult('')
-    setHeroHpBar(100)
+    setHeroHpBar((hero.currentDef / hero.def) * 100)
     setCreepHpBar(100)
     setLogs([])
   }

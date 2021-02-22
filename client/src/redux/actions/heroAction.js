@@ -8,3 +8,9 @@ export const fetchHero = createAsyncThunk('hero/fetchHero', async (login) => {
   return data;
 });
 
+export const saveHeroData = createAsyncThunk('hero/saveHero', async (hero) => {
+  const data = axios.put(`${config.serverUrl}/api/heroes/${hero._id}`,hero).then(
+    res => res.data)
+  return data;
+});
+

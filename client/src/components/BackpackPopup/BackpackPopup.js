@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './BackpackPopup.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { openBackpack } from '../../redux/actions/navAction'
@@ -8,9 +8,6 @@ import elf from '../../assets/png/elf.png'
 import gnome from '../../assets/png/gnome.png'
 import { getBackpack } from '../../redux/selectors/heroSelector'
 import config from '../../config/default.json'
-import BackpackItem from '../BackpackItem/BackpackItem'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import axios from 'axios'
 import { getHero } from '../../redux/selectors/heroSelector'
 import { fetchHero } from '../../redux/actions/heroAction'
@@ -30,34 +27,6 @@ export default function BackpackPopup() {
       slots.push(<div className='backpack__slot'>{i}</div>)
     }
     return slots
-  }
-
-  const dragStartHandler = (e, item) => {
-    setCurrentItem(item)
-    e.target.style.background = 'black'
-  }
-
-  const dragEndHandler = (e) => {
-    e.target.style.background = 'none'
-  }
-
-  const dragOverHandler = (e) => {
-    e.preventDefault()
-    e.target.style.background = 'black'
-  }
-
-  const dropHandler = (e, item) => {
-    e.preventDefault()
-    setItems(items.map(it => {
-      if (it._id === item._id) {
-        return { ...it, order: currentItem.order }
-      }
-      if (it._id === currentItem._id) {
-        return { ...it, order: item.order }
-      }
-      return it
-    }))
-    e.target.style.background = 'none'
   }
 
   const handleClickItemInventory = (item) => {
@@ -139,7 +108,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].helm && equipment[activeHero].helm.img && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].helm.img}`} alt={equipment[activeHero].helm.itemName} />}
                     {
-                      equipment[activeHero].helm &&
+                      equipment[activeHero].helm.itemName &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].helm.stats.dmg && <div>Урон: {equipment[activeHero].helm.stats.dmg}</div>}
                         {equipment[activeHero].helm.stats.def && <div>Защита: {equipment[activeHero].helm.stats.def}</div>}
@@ -241,7 +210,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].weapon && <img className='backpack__itemImg' className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].weapon.img}`} alt={equipment[activeHero].weapon.itemName} />}
                     {
-                      equipment[activeHero].weapon.stats &&
+                      equipment[activeHero].weapon &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].weapon.stats.dmg && <div>Урон: {equipment[activeHero].weapon.stats.dmg}</div>}
                         {equipment[activeHero].weapon.stats.def && <div>Защита: {equipment[activeHero].weapon.stats.def}</div>}
@@ -319,7 +288,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].helm && equipment[activeHero].helm.img && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].helm.img}`} alt={equipment[activeHero].helm.itemName} />}
                     {
-                      equipment[activeHero].helm.stats &&
+                      equipment[activeHero].helm &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].helm.stats.dmg && <div>Урон: {equipment[activeHero].helm.stats.dmg}</div>}
                         {equipment[activeHero].helm.stats.def && <div>Защита: {equipment[activeHero].helm.stats.def}</div>}
@@ -332,7 +301,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].weapon && <img className='backpack__itemImg' className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].weapon.img}`} alt={equipment[activeHero].weapon.itemName} />}
                     {
-                      equipment[activeHero].weapon.stats &&
+                      equipment[activeHero].weapon &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].weapon.stats.dmg && <div>Урон: {equipment[activeHero].weapon.stats.dmg}</div>}
                         {equipment[activeHero].weapon.stats.def && <div>Защита: {equipment[activeHero].weapon.stats.def}</div>}
@@ -345,7 +314,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].gloves && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].gloves.img}`} alt={equipment[activeHero].gloves.itemName} />}
                     {
-                      equipment[activeHero].gloves.stats &&
+                      equipment[activeHero].gloves &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].gloves.stats.dmg && <div>Урон: {equipment[activeHero].gloves.stats.dmg}</div>}
                         {equipment[activeHero].gloves.stats.def && <div>Защита: {equipment[activeHero].gloves.stats.def}</div>}
@@ -359,7 +328,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].cuirass && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].cuirass.img}`} alt={equipment[activeHero].cuirass.itemName} />}
                     {
-                      equipment[activeHero].cuirass.stats &&
+                      equipment[activeHero].cuirass &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].cuirass.stats.dmg && <div>Урон: {equipment[activeHero].cuirass.stats.dmg}</div>}
                         {equipment[activeHero].cuirass.stats.def && <div>Защита: {equipment[activeHero].cuirass.stats.def}</div>}
@@ -372,7 +341,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].ring && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].ring.img}`} alt={equipment[activeHero].ring.itemName} />}
                     {
-                      equipment[activeHero].ring.stats &&
+                      equipment[activeHero].ring &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].ring.stats.dmg && <div>Урон: {equipment[activeHero].ring.stats.dmg}</div>}
                         {equipment[activeHero].ring.stats.def && <div>Защита: {equipment[activeHero].ring.stats.def}</div>}
@@ -385,7 +354,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].boots && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].boots.img}`} alt={equipment[activeHero].boots.itemName} />}
                     {
-                      equipment[activeHero].ring.stats &&
+                      equipment[activeHero].ring &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].boots.stats.dmg && <div>Урон: {equipment[activeHero].boots.stats.dmg}</div>}
                         {equipment[activeHero].boots.stats.def && <div>Защита: {equipment[activeHero].boots.stats.def}</div>}
@@ -411,7 +380,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].helm && equipment[activeHero].helm.img && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].helm.img}`} alt={equipment[activeHero].helm.itemName} />}
                     {
-                      equipment[activeHero].helm.stats &&
+                      equipment[activeHero].helm &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].helm.stats.dmg && <div>Урон: {equipment[activeHero].helm.stats.dmg}</div>}
                         {equipment[activeHero].helm.stats.def && <div>Защита: {equipment[activeHero].helm.stats.def}</div>}
@@ -424,7 +393,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].weapon && <img className='backpack__itemImg' className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].weapon.img}`} alt={equipment[activeHero].weapon.itemName} />}
                     {
-                      equipment[activeHero].weapon.stats &&
+                      equipment[activeHero].weapon &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].weapon.stats.dmg && <div>Урон: {equipment[activeHero].weapon.stats.dmg}</div>}
                         {equipment[activeHero].weapon.stats.def && <div>Защита: {equipment[activeHero].weapon.stats.def}</div>}
@@ -437,7 +406,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].gloves && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].gloves.img}`} alt={equipment[activeHero].gloves.itemName} />}
                     {
-                      equipment[activeHero].gloves.stats &&
+                      equipment[activeHero].gloves &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].gloves.stats.dmg && <div>Урон: {equipment[activeHero].gloves.stats.dmg}</div>}
                         {equipment[activeHero].gloves.stats.def && <div>Защита: {equipment[activeHero].gloves.stats.def}</div>}
@@ -450,7 +419,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].cuirass && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].cuirass.img}`} alt={equipment[activeHero].cuirass.itemName} />}
                     {
-                      equipment[activeHero].cuirass.stats &&
+                      equipment[activeHero].cuirass &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].cuirass.stats.dmg && <div>Урон: {equipment[activeHero].cuirass.stats.dmg}</div>}
                         {equipment[activeHero].cuirass.stats.def && <div>Защита: {equipment[activeHero].cuirass.stats.def}</div>}
@@ -463,7 +432,7 @@ export default function BackpackPopup() {
                   <div className="backpack__heroItem">
                     {equipment && equipment[activeHero] && equipment[activeHero].ring && <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${equipment[activeHero].ring.img}`} alt={equipment[activeHero].ring.itemName} />}
                     {
-                      equipment[activeHero].ring.stats &&
+                      equipment[activeHero].ring &&
                       <div className="backpack__itemStats">
                         {equipment[activeHero].ring.stats.dmg && <div>Урон: {equipment[activeHero].ring.stats.dmg}</div>}
                         {equipment[activeHero].ring.stats.def && <div>Защита: {equipment[activeHero].ring.stats.def}</div>}
@@ -513,12 +482,6 @@ export default function BackpackPopup() {
                 {
                   backpack && items.map(item => (
                     <div className="backpack__item"
-                      onDragStart={(e) => dragStartHandler(e, item)}
-                      onDragLeave={(e) => dragEndHandler(e)}
-                      onDragEnd={(e) => dragEndHandler(e)}
-                      onDragOver={(e) => dragOverHandler(e)}
-                      onDrop={(e) => dropHandler(e, item)}
-                      draggable={true}
                       onClick={() => handleClickItemInventory(item)}
                     >
                       <img className='backpack__itemImg' src={`${config.serverUrl}/api/images/${item.img}`} alt={item.itemName} />
@@ -529,7 +492,6 @@ export default function BackpackPopup() {
                           {item.stats.def && <div>Защита: {item.stats.def}</div>}
                         </div>
                       }
-
                     </div>
                   ))
                 }
